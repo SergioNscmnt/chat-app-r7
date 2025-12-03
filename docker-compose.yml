@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: bash -c "bundle exec rails db:prepare && bundle exec rails tailwindcss:build && bundle exec rails server -b 0.0.0.0 -p 3000"
+    environment:
+      - RAILS_ENV=development
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+
+  css:
+    build: .
+    command: bundle exec rails tailwindcss:watch
+    environment:
+      - RAILS_ENV=development
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+
+volumes:
+  bundle:
