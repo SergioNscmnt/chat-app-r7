@@ -15,7 +15,3 @@ Aplicação de chat em tempo real construída com Ruby on Rails 7, Hotwire (Turb
 ```bash
 docker compose up --build web css
 ```
-
-## Próximos passos
-- Ajustar credenciais/variáveis de ambiente conforme necessário.
-- Se preferir outra branch padrão, renomeie: `git branch -M main`.
