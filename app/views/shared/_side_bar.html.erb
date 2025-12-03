@@ -1,7 +1,28 @@
-<%= turbo_stream_from 'user_rooms_channel' %>
-<%= turbo_stream_from 'room_details_channel' %>
+<%= turbo_stream_from 'usuario_salas_channel' %>
 
-<nav class="w-60 flex flex-col items-center justify-between border border-sky-500">
-  <%= render 'shared/user_rooms' %>
-  <%= render 'shared/create_room' %>
-</nav>
+<aside class="hidden md:flex w-72 sticky top-[88px] left-0 h-[calc(100vh-96px)]">
+  <div class="h-full overflow-y-auto space-y-4 p-4 rounded-2xl bg-slate-900/60 border border-white/5 shadow-xl shadow-slate-900/50">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-xs text-slate-400">Usuário</p>
+        <p class="font-semibold text-white truncate"><%= current_usuario.email %></p>
+      </div>
+      <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center text-sm font-bold text-slate-900 shadow-lg shadow-emerald-500/30">
+        <%= current_usuario.email.first(2).upcase %>
+      </div>
+    </div>
+
+    <%= link_to new_sala_path, data: { turbo_frame: 'salas_controller' }, class: 'w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 text-slate-900 font-semibold text-sm py-2 shadow-lg shadow-sky-500/30 hover:shadow-emerald-500/30 transition' do %>
+      Nova sala
+    <% end %>
+
+    <div>
+      <h4 class="text-xs uppercase tracking-wide text-slate-400 mb-2">Minhas salas</h4>
+      <div class="flex flex-col gap-2" id="usuario_<%= current_usuario.id %>_salas">
+        <% current_usuario.salas.each do |sala| %>
+          <%= render 'shared/sala', sala: sala, usuario_atual: current_usuario %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</aside>

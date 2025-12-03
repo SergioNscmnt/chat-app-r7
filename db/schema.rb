@@ -10,33 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_28_004216) do
-  create_table "messages", force: :cascade do |t|
-    t.string "message"
-    t.integer "user_id", null: false
-    t.integer "room_id", null: false
+ActiveRecord::Schema[7.0].define(version: 2024_10_03_000000) do
+  create_table "mensagens", force: :cascade do |t|
+    t.string "conteudo"
+    t.integer "usuario_id", null: false
+    t.integer "sala_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["room_id"], name: "index_messages_on_room_id"
-    t.index ["user_id"], name: "index_messages_on_user_id"
+    t.index ["sala_id"], name: "index_mensagens_on_sala_id"
+    t.index ["usuario_id"], name: "index_mensagens_on_usuario_id"
   end
 
-  create_table "rooms", force: :cascade do |t|
-    t.string "name"
+  create_table "salas", force: :cascade do |t|
+    t.string "nome"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_rooms", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "room_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["room_id"], name: "index_user_rooms_on_room_id"
-    t.index ["user_id"], name: "index_user_rooms_on_user_id"
-  end
-
-  create_table "users", force: :cascade do |t|
+  create_table "usuarios", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -44,12 +35,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_28_004216) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["email"], name: "index_usuarios_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_usuarios_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "messages", "rooms"
-  add_foreign_key "messages", "users"
-  add_foreign_key "user_rooms", "rooms"
-  add_foreign_key "user_rooms", "users"
+  create_table "usuarios_salas", force: :cascade do |t|
+    t.integer "usuario_id", null: false
+    t.integer "sala_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "papel", default: "member", null: false
+    t.string "categoria"
+    t.index ["papel"], name: "index_usuarios_salas_on_papel"
+    t.index ["sala_id"], name: "index_usuarios_salas_on_sala_id"
+    t.index ["usuario_id"], name: "index_usuarios_salas_on_usuario_id"
+  end
+
+  add_foreign_key "mensagens", "salas"
+  add_foreign_key "mensagens", "salas"
+  add_foreign_key "mensagens", "usuarios"
+  add_foreign_key "mensagens", "usuarios"
+  add_foreign_key "usuarios_salas", "salas"
+  add_foreign_key "usuarios_salas", "salas"
+  add_foreign_key "usuarios_salas", "usuarios"
+  add_foreign_key "usuarios_salas", "usuarios"
 end

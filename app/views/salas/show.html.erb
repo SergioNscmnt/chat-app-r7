@@ -1,0 +1,33 @@
+<%= turbo_frame_tag 'salas_controller' do %>
+  <%= turbo_stream_from 'sala_mensagens_channel' %>
+
+  <main class="max-w-7xl mx-auto px-6 py-10 space-y-6">
+    <div class="flex flex-col lg:flex-row gap-6">
+      <%= render 'shared/side_bar' %>
+
+      <section class="flex-1 space-y-6">
+        <%= render 'salas/sala', sala: @sala %>
+
+        <%= render 'salas/membros', sala: @sala, vinculos: @vinculos, usuarios_disponiveis: @usuarios_disponiveis %>
+
+        <div class="rounded-3xl bg-slate-900/70 border border-white/5 shadow-2xl shadow-slate-900/50 p-4 lg:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Mensagens</h3>
+              <p class="text-xs text-slate-400">Envie e acompanhe atualizações em tempo real.</p>
+            </div>
+            <span class="text-xs text-slate-400">Sala atual: <%= @sala.nome %></span>
+          </div>
+          <div class="h-80 lg:h-96 w-full bg-slate-900/60 border border-white/5 rounded-2xl p-4 overflow-y-auto space-y-3" id="sala_mensagens_div">
+            <% @sala.mensagens.order(:id).each do |mensagem| %>
+              <%= render 'mensagens/mensagem', mensagem: mensagem %>
+            <% end %>
+          </div>
+          <div class="mt-4">
+            <%= render 'mensagens/form', { sala: @sala, mensagem: Mensagem.new } %>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+<% end %>

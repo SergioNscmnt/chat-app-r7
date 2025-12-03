@@ -1,0 +1,34 @@
+<%= turbo_frame_tag 'salas_controller' do %>
+  <main class="max-w-7xl mx-auto px-6 py-10 space-y-8">
+    <div class="flex flex-col lg:flex-row gap-6">
+      <%= render 'shared/side_bar' %>
+
+      <section class="flex-1 space-y-6">
+        <div class="rounded-3xl bg-slate-900/70 border border-white/5 shadow-2xl shadow-slate-900/50 p-8">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div class="space-y-2">
+              <p class="text-sm text-slate-300">Bem-vindo</p>
+              <h1 class="text-3xl font-bold text-white">Chat moderno com Rails 7 + Hotwire</h1>
+              <p class="text-slate-300 max-w-2xl">Salas com atualizações em tempo real, layout responsivo em Tailwind e controle de acesso por papéis e categorias.</p>
+            </div>
+            <div class="flex gap-2">
+              <%= link_to 'Criar sala', new_sala_path, data: { turbo_frame: 'salas_controller' }, class: 'inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-emerald-500 text-slate-900 font-semibold px-3 py-2 shadow-md shadow-sky-500/20 hover:shadow-emerald-500/30 text-xs' %>
+              <%= link_to 'Minhas salas', '#salas-grid', class: 'inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-white hover:border-sky-400 text-xs' %>
+            </div>
+          </div>
+        </div>
+
+        <section id="salas-grid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          <% current_usuario.salas.each do |sala| %>
+            <%= render 'shared/sala', sala: sala, usuario_atual: current_usuario %>
+          <% end %>
+          <% if current_usuario.salas.empty? %>
+            <div class="col-span-full rounded-2xl border border-dashed border-white/10 p-6 text-center text-slate-300">
+              Nenhuma sala ainda. Crie a primeira para começar.
+            </div>
+          <% end %>
+        </section>
+      </section>
+    </div>
+  </main>
+<% end %>

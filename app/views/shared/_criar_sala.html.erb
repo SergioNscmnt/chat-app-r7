@@ -1,0 +1,8 @@
+<%= turbo_frame_tag 'sala_form' do %>
+  <section class="flex flex-col items-center justify-center gap-2 mb-5">
+    <h3 class="text-white font-semibold text-sm text-center">Quer iniciar uma nova conversa?</h3>
+    <%= link_to new_sala_path, id: 'new_sala_path', class: 'rounded px-3 py-1 bg-green-700 text-white font-semibold text-sm' do %>
+      Criar nova sala
+    <% end %>
+  </section>
+<% end %>

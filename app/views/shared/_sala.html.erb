@@ -1,0 +1,18 @@
+<% usuario_atual = local_assigns[:usuario_atual] %>
+<% vinculo = local_assigns[:vinculo_atual] || (usuario_atual ? sala.vinculo_para(usuario_atual) : nil) %>
+
+<%= turbo_frame_tag "sala_#{sala.id}", class: 'group block w-full' do %>
+  <%= link_to sala_path(sala), data: { turbo_frame: 'salas_controller' }, class: 'flex w-full items-center justify-between rounded-xl border border-white/5 bg-slate-900/70 px-4 py-3 hover:border-sky-400 hover:bg-slate-900 shadow-lg shadow-slate-900/50 transition' do %>
+    <div class="flex flex-col gap-1 w-full">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-sm font-semibold text-white truncate"><%= sala.nome %></span>
+          <span class="rounded-full bg-slate-700/80 text-slate-200 text-[8px] px-2 py-[3px] font-semibold border border-white/5 whitespace-nowrap">
+            <%= vinculo&.admin? ? 'Admin' : 'Membro' %>
+          </span>
+        </div>
+      </div>
+      <span class="text-xs text-slate-400">Categoria: <%= vinculo&.display_category || 'Geral' %></span>
+    </div>
+  <% end %>
+<% end %>

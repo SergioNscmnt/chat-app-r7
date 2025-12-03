@@ -1,0 +1,21 @@
+pt-BR:
+  activerecord:
+    models:
+      usuario: "Usuário"
+      sala: "Sala"
+      mensagem: "Mensagem"
+      usuario_sala: "Participação na sala"
+    attributes:
+      sala:
+        nome: "Nome"
+      mensagem:
+        conteudo: "Conteúdo"
+      usuario_sala:
+        papel: "Papel"
+        categoria: "Categoria"
+  devise:
+    sessions:
+      signed_in: "Login realizado com sucesso."
+      signed_out: "Logout realizado com sucesso."
+    registrations:
+      signed_up: "Cadastro realizado com sucesso."

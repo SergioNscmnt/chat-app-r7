@@ -1,0 +1,71 @@
+<div class="grid lg:grid-cols-3 gap-4" id="sala_team_panel">
+  <div class="lg:col-span-2 rounded-3xl bg-slate-900/70 border border-white/5 shadow-xl shadow-slate-900/40 p-4 lg:p-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h3 class="text-lg font-semibold text-white">Participantes</h3>
+        <p class="text-xs text-slate-400">Papéis e categorias de cada usuário na sala.</p>
+      </div>
+      <span class="text-xs text-slate-400"><%= pluralize(vinculos.count, 'membro') %></span>
+    </div>
+    <div class="divide-y divide-white/5">
+      <% vinculos.each do |vinculo| %>
+        <div class="py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-slate-800/80 border border-white/5 flex items-center justify-center text-sm font-bold text-slate-200">
+              <%= vinculo.usuario.email.first(2).upcase %>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-white"><%= vinculo.usuario.email %></p>
+              <p class="text-[12px] text-slate-400">Categoria: <%= vinculo.display_category %></p>
+            </div>
+          </div>
+          <% if sala.admin?(current_usuario) %>
+            <div class="flex flex-wrap items-center gap-2">
+              <%= form_with url: update_vinculo_sala_path(sala), method: :patch, class: "flex flex-wrap gap-2 items-center" do |f| %>
+                <%= f.hidden_field :usuario_id, value: vinculo.usuario_id %>
+                <%= f.select :papel, options_for_select(UsuarioSala.papels.keys.map { |r| [r.titleize, r] }, vinculo.papel), {}, class: "text-sm rounded-lg bg-slate-800/80 border border-white/10 text-white px-2 py-1" %>
+                <%= f.text_field :categoria, value: vinculo.categoria, placeholder: "Categoria (opcional)", class: "text-sm rounded-lg bg-slate-800/80 border border-white/10 text-white px-2 py-1" %>
+                <%= f.submit "Salvar", class: "text-xs font-semibold px-3 py-1 rounded-lg bg-sky-600 text-white hover:bg-sky-500" %>
+              <% end %>
+              <% unless vinculo.usuario_id == current_usuario.id %>
+                <%= button_to "Remover", remove_usuario_sala_path(sala), method: :delete, params: { usuario_id: vinculo.usuario_id }, class: "text-xs font-semibold px-3 py-1 rounded-lg bg-red-600 text-white hover:bg-red-500" %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="flex items-center gap-2">
+              <span class="rounded-full border border-white/10 px-3 py-1 text-[12px] text-slate-200"><%= vinculo.papel.titleize %></span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if sala.admin?(current_usuario) %>
+    <div class="rounded-3xl bg-slate-900/70 border border-white/5 shadow-xl shadow-slate-900/40 p-4 lg:p-6">
+      <h3 class="text-lg font-semibold text-white mb-2">Adicionar pessoa</h3>
+      <p class="text-xs text-slate-400 mb-4">Escolha o usuário, defina o papel e a categoria dentro da sala.</p>
+      <% if usuarios_disponiveis.any? %>
+        <%= form_with url: add_usuario_sala_path(sala), method: :post, class: "space-y-3" do |f| %>
+          <div class="space-y-1">
+            <label class="text-xs text-slate-300">Usuário</label>
+            <%= f.select :usuario_id, options_from_collection_for_select(usuarios_disponiveis, :id, :email), {}, class: "w-full text-sm rounded-lg bg-slate-800/80 border border-white/10 text-white px-3 py-2" %>
+          </div>
+          <div class="flex gap-2">
+            <div class="flex-1 space-y-1">
+              <label class="text-xs text-slate-300">Papel</label>
+              <%= f.select :papel, options_for_select(UsuarioSala.papels.keys.map { |r| [r.titleize, r] }, 'membro'), {}, class: "w-full text-sm rounded-lg bg-slate-800/80 border border-white/10 text-white px-3 py-2" %>
+            </div>
+            <div class="flex-1 space-y-1">
+              <label class="text-xs text-slate-300">Categoria</label>
+              <%= f.text_field :categoria, placeholder: "Ex: Suporte, Produto...", class: "w-full text-sm rounded-lg bg-slate-800/80 border border-white/10 text-white px-3 py-2" %>
+            </div>
+          </div>
+          <%= f.submit "Adicionar", class: "w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 text-slate-900 font-semibold px-4 py-2 shadow-lg shadow-sky-500/30 hover:shadow-emerald-500/30" %>
+        <% end %>
+      <% else %>
+        <p class="text-xs text-slate-400 mt-3">Todos os usuários já fazem parte da sala.</p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

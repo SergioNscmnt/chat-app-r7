@@ -11,3 +11,17 @@
 }
 
 */
+
+@layer base {
+  body {
+    @apply bg-slate-900 text-slate-100 min-h-screen antialiased;
+    background: radial-gradient(circle at 20% 20%, rgba(59,130,246,0.12), transparent 35%),
+                radial-gradient(circle at 80% 0%, rgba(16,185,129,0.12), transparent 30%),
+                radial-gradient(circle at 50% 80%, rgba(236,72,153,0.1), transparent 35%),
+                #0b1021;
+  }
+
+  a {
+    @apply transition duration-150 ease-out;
+  }
+}

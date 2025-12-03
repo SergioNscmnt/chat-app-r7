@@ -1,0 +1,8 @@
+<div data-controller="form">
+  <%= form_with(model: [sala, mensagem], url: sala_mensagens_path(sala), id: 'mensagem_form', class: 'w-full flex flex-col gap-3', data: { controller: 'form', action: 'submit->form#resetComponent' }) do |f| %>
+    <div class="flex w-full gap-3 flex-col sm:flex-row">
+      <%= f.text_field :conteudo, placeholder: "Escreva sua mensagem...", class: 'w-full rounded-2xl bg-slate-800/80 border border-white/10 text-sm text-white px-4 py-3 focus:border-sky-400 focus:outline-none shadow-inner shadow-slate-900/50' %>
+      <%= f.submit "Enviar", class: 'px-5 py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-emerald-500 text-slate-900 font-semibold shadow-lg shadow-sky-500/30 hover:shadow-emerald-500/30 cursor-pointer' %>
+    </div>
+  <% end %>
+</div>
